@@ -1,13 +1,13 @@
 {
-    "name": "Airpods Battery status",
-    "description": "Show Airpods battery level in top bar",
+    "name": "Water monitor",
+    "description": "Monitor how much water you drink",
     "shell-version": [
         "3.36",
         "3.38",
         "40",
         "41"
     ],
-    "uuid": "airpods-battery-status@ju.wtf",
+    "uuid": "water-status@pepijndevos.nl",
     "version": "6",
-    "url": "https://github.com/delphiki/gnome-airpods-battery-status"
+    "url": "https://github.com/pepijndevos/gnome-water-status"
 }
