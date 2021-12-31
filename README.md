@@ -1,4 +1,4 @@
-# Airpods Battery Status
+# Gnome Arduino water monitor
 
 A Gnome Shell Extension to display the amount of water you're drinking, based on input from an Arduino.
 
