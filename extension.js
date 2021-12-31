@@ -22,27 +22,44 @@ class WaterStatus {
         this._waterlabel = null;
         this._icon = null;
 
-        this._input_file = null;
-        this._stream = null;
+        this._prevtty = false;
 
         this.buildLayout();
 
     }
     
     readStatus() {
-        if (!GLib.file_test(this._ttypath, GLib.FileTest.EXISTS)) {
-            Log("file missing")
+        let ttyavailable = GLib.file_test(this._ttypath, GLib.FileTest.EXISTS)
+        if (!ttyavailable) {
+            // Log("file missing")
+            this._prevtty = ttyavailable;
             return true;
         }
 
-        Log("file exists, starting read")
+        if (!this._prevtty && ttyavailable) {
+            Log("tty appeared, stty")
+            let proc = Gio.Subprocess.new(['stty', '-F', this._ttypath, "min", "0"], Gio.SubprocessFlags.NONE);
+            proc.wait_async(null, (proc, result) => {
+                    proc.wait_finish(result);
+                    if (proc.get_successful()) {
+                        Log('stty succeeded');
+                    } else {
+                        Log('stty failed');
+                    }
+            });
+            this._prevtty = ttyavailable;
+            return true;
+        }
+
+        // Log("file exists")
+
         let fileContents = GLib.file_get_contents(this._ttypath)[1];
 
         let lines = ByteArray.toString(fileContents).trim().split('\n');
         let lastLine = lines[lines.length - 1];
         if(lastLine.length > 0) {
             let values = lastLine.split(';');
-            Log(lastLine)
+            // Log(lastLine)
 
             if (parseInt(values[0])) {
                 this._icon.set_gicon(full_icon);
@@ -62,7 +79,7 @@ class WaterStatus {
         });
 
         this._waterlabel = new St.Label({
-            text: 'na',
+            text: '-',
             y_align: Clutter.ActorAlign.CENTER,
             style_class: "water-ml"
         });
