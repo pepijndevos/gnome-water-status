@@ -2,7 +2,7 @@
 
 A Gnome Shell Extension to display the amount of water you're drinking, based on input from an Arduino.
 
-![lego scale](ldraw/base_lc.png)
+![lego scale](ldraw/scale_lc.png)
 
 ## Hardware
 
